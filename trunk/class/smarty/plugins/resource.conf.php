@@ -5,7 +5,7 @@
  * File: resource.conf.php
  * Type: resource
  * Name: conf
- * Purpose: ��PAGE_DIR��ģ��
+ * Purpose: 从PAGE_DIR读模板
  * -------------------------------------------------------------
  */
 function smarty_resource_conf_realpath($name)
@@ -15,48 +15,31 @@ static $cache;
 if(isset($cache[$name])) return $cache[$name];
 $info=explode('.',$name);
 if(count($info)==1)
- { 	$name=str::word($name,true);
- 	if($name=='') $name=$PAGE['pid'];
- 	
-  $path=PAGE_DIR."/$PAGE[cid]/$name.$PAGE[bid].conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/$PAGE[cid]/$name.conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_conf.$PAGE[bid].conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_conf.conf";
+ {
+ 	$cid=$PAGE['cid'];
+ 	$pid=str::word($name,true);
+ 	$bid=$PAGE['bid'];
  }
 elseif(count($info)==2)
  {
- 	$info[0]=str::word($info[0],true);
- 	$info[1]=str::word($info[1],true);
- 	if($info[0]=='') $info[0]=$PAGE['cid'];
- 	if($info[1]=='') $info[1]=$PAGE['pid'];
- 	
-  $path=PAGE_DIR."/$info[0]/$info[1].$PAGE[bid].conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/$info[0]/$info[1].conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_conf.$PAGE[bid].conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_conf.conf";
+ 	$cid=str::word($info[0],true);
+ 	$pid=str::word($info[1],true);
+ 	$bid=$PAGE['bid'];
  }
  else
  {
- 	$info[0]=str::word($info[0],true);
- 	$info[1]=str::word($info[1],true);
- 	$info[2]=str::word($info[2],true);
- 	if($info[0]=='') $info[0]=$PAGE['cid'];
- 	if($info[1]=='') $info[1]=$PAGE['pid'];
- 	if($info[2]=='') $info[2]=$PAGE['bid'];
-  $path=PAGE_DIR."/$info[0]/$info[1].$info[2].conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/$info[0]/$info[1].conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_conf.$info[2].conf";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_conf.conf";
+ 	$cid=str::word($info[0],true);
+ 	$pid=str::word($info[1],true);
+ 	$bid=str::word($info[2],true);
  }
+ 	if($cid=='') $cid=$PAGE['cid'];
+ 	if($pid=='') $pid=$PAGE['pid'];
+ 	if($bid=='') $bid=$PAGE['bid'];
+  $path=PAGE_DIR."/$cid/$pid.$bid.conf";
+  if(!is_file($path))
+   $path=PAGE_DIR."/$cid/$pid.conf";
+  if(!is_file($path))
+ throw new pageexception("配置文件 \"$name\" 不存在",3404);
  $cache[$name]=$path;
  return $path;
 }

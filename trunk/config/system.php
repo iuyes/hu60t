@@ -6,6 +6,10 @@ date_default_timezone_set('asia/shanghai');
 //用户自动掉线时间，单位：秒
 define('DEFAULT_LOGIN_TIMEOUT',2592000);
   
+//默认页面cid
+define('DEFAULT_PAGE_CID','index');
+//默认页面pid
+define('DEFAULT_PAGE_PID','index');
 //默认页面bid
 define('DEFAULT_PAGE_BID','xhtml');
 //默认页面mime

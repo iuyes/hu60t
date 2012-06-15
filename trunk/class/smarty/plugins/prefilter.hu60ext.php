@@ -3,7 +3,7 @@
 function smarty_prefilter_hu60ext($source,$smarty)
 {
 global $PAGE;
-$bid=hu60::$bid;
+$bid=page::getRegBid();
 unset($bid[$PAGE['bid']]);
 $bid=implode('|',array_keys($bid));
 $l=preg_quote($smarty->left_delimiter);

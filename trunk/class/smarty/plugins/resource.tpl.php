@@ -5,7 +5,7 @@
  * File: resource.tpl.php
  * Type: resource
  * Name: tpl
- * Purpose: ��PAGE_DIR��ģ��
+ * Purpose: 从PAGE_DIR读模板
  * -------------------------------------------------------------
  */
 function smarty_resource_tpl_realpath($name)
@@ -15,50 +15,34 @@ static $cache;
 if(isset($cache[$name])) return $cache[$name];
 $info=explode('.',$name);
 if(count($info)==1)
- { 	$name=str::word($name,true);
- 	if($name=='') $name=$PAGE['pid'];
- 	
-  $path=PAGE_DIR."/$PAGE[cid]/$name.$PAGE[bid].tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/$PAGE[cid]/$name.tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_tpl.$PAGE[bid].tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_tpl.tpl";
+ {
+ 	$cid=$PAGE['cid'];
+ 	$pid=str::word($name,true);
+ 	$bid=$PAGE['bid'];
  }
 elseif(count($info)==2)
  {
- 	$info[0]=str::word($info[0],true);
- 	$info[1]=str::word($info[1],true);
- 	if($info[0]=='') $info[0]=$PAGE['cid'];
- 	if($info[1]=='') $info[1]=$PAGE['pid'];
- 	
-  $path=PAGE_DIR."/$info[0]/$info[1].$PAGE[bid].tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/$info[0]/$info[1].tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_tpl.$PAGE[bid].tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_tpl.tpl";
+ 	$cid=str::word($info[0],true);
+ 	$pid=str::word($info[1],true);
+ 	$bid=$PAGE['bid'];
  }
  else
  {
- 	$info[0]=str::word($info[0],true);
- 	$info[1]=str::word($info[1],true);
- 	$info[2]=str::word($info[2],true);
- 	if($info[0]=='') $info[0]=$PAGE['cid'];
- 	if($info[1]=='') $info[1]=$PAGE['pid'];
- 	if($info[2]=='') $info[2]=$PAGE['bid'];
-  $path=PAGE_DIR."/$info[0]/$info[1].$info[2].tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/$info[0]/$info[1].tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_tpl.$info[2].tpl";
-  if(!is_file($path))
-   $path=PAGE_DIR."/error/no_tpl.tpl";
+ 	$cid=str::word($info[0],true);
+ 	$pid=str::word($info[1],true);
+ 	$bid=str::word($info[2],true);
  }
+ 	if($cid=='') $cid=$PAGE['cid'];
+ 	if($pid=='') $pid=$PAGE['pid'];
+ 	if($bid=='') $bid=$PAGE['bid'];
+  $path=PAGE_DIR."/$cid/$pid.$bid.tpl";
+  if(!is_file($path))
+   $path=PAGE_DIR."/$cid/$pid.tpl";
+  if(!is_file($path))
+ throw new pageexception("模板文件 \"$name\" 不存在",2404);
  $cache[$name]=$path;
  return $path;
+
 }
 function smarty_resource_tpl_source($name, &$source, $smarty)
 {
