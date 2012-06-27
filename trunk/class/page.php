@@ -5,13 +5,13 @@
 class page implements ArrayAccess
 {  
 //已注册的bid
-private static $bid=array();
+protected static $bid=array();
     
 //模板引擎对象
-private $tpl=null;
+protected $tpl=null;
       
 //页面信息保存
-private $page=array();
+protected $page=array();
 
 /*取得已注册的bid信息*/
 public static function getRegbid() {
@@ -62,11 +62,11 @@ return $this->page['mime'];
 public function load($cid=NULL,$pid=NULL,$bid=NULL)
 {
 if($cid===NULL) $cid=$this->page['cid'];
-if($cid===NULL) $cid=DEFAULT_PAGE_CID;
+if($cid=='') $cid=DEFAULT_PAGE_CID;
 if($pid===NULL) $pid=$this->page['pid'];
-if($pid===NULL) $pid=DEFAULT_PAGE_PID;
+if($pid=='') $pid=DEFAULT_PAGE_PID;
 if($bid===NULL) $bid=$this->page['bid'];
-if($bid===NULL) $bid=DEFAULT_PAGE_BID;
+if($bid=='') $bid=DEFAULT_PAGE_BID;
 $path=PAGE_DIR."/$cid/$pid.$bid.php";
 if(!is_file($path))
   $path=PAGE_DIR."/$cid/$pid.php";
@@ -104,6 +104,8 @@ $tpl->setConfigDir(CONFIG_DIR);
 $tpl->setCacheDir(TEMP_DIR.'/pagecache');
 $tpl->autoload_filters=array('pre'=>array('hu60ext'));
 $tpl->setCompileId($this->page['bid']);
+if(SMARTY_COMPILE==1) $tpl->compile_check=false;
+elseif(SMARTY_COMPILE==2) $tpl->force_compile=true;
 $tpl->assign(array('page'=>$this,'cid'=>$this->page['cid'],'pid'=>$this->page['pid'],'bid'=>$this->page['bid']));
 $this->tpl=$tpl;
 return $tpl;
@@ -125,7 +127,7 @@ array_splice($info,0,1);
 }
 else
 {
-$this->page['sid']=$_REQUEST['hu60_sid'] or $this->page['sid']=$_REQUEST['sid'];
+$this->page['sid']=$_COOKIE[COOKIE_A.'sid'];
 }
 $info2=explode('.',$info[0]);
 $info[0]='';
@@ -133,8 +135,7 @@ $this->page['cid']=str::word($info2[0],true);
 $this->page['pid']=str::word($info2[1],true);
 $cnt=count($info2)-1;
 if($cnt<2) $cnt=2;
-$bid=str::word($info2[$cnt],true);
-if($bid!='') self::regBid($bid);
+$this->page['bid']=str::word($info2[$cnt],true);
 array_splice($info2,0,2);
 unset($info2[$cnt-2]);
 $this->page['ext']=$info2;
