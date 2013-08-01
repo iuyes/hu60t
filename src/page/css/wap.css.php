@@ -13,4 +13,4 @@ if($css!='') {
 $tpl->display($x='tpl:css.wap_'.$css.'.css');
 } catch(exception $ERR) {
 throw $ERR;
-}
+ }

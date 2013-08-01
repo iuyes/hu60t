@@ -8,4 +8,4 @@
 <link rel="stylesheet" type="text/css" href="{$css|code}"/>
 <title>{$title|code}</title>
 </head>
-<body>{if !$base}<a id="top" href="#bottom" accesskey="6"></a>{/if}
+<body>{if !$base}<a id="top" href="#bottom" accesskey="6"></a>{/if}

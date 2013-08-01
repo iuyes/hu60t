@@ -6,3 +6,4 @@
 <meta http-equiv="content-type" content="{$page.mime};charset=utf-8"/>
 </head>
 <card id="{if $id}{$id}{else}main{/if}" title="{$title|code}"{if $time !== null} ontimer="{if $url === null}{hu60::getmyurl()|code}{else}{$url|code}{/if}"><timer value="{$time}0"/{/if}>
+

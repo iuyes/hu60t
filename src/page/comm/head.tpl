@@ -1,1 +1,11 @@
-/**********
+{header content_type="text/html" charset="utf-8"}
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="{$page.mime};charset=utf-8"/>{if $time !== null}<meta http-equiv="refresh" content="{$time};url={if $url === null}{hu60::getmyurl()|code}{else}{$url|code}{/if}"/>{/if}
+{if $css === null}{$css="css.wap.{$smarty.get.css}.css"}{/if}
+<link rel="stylesheet" type="text/css" href="{$css|code}"/>
+<title>{$title|code}</title>
+</head>
+<body>
